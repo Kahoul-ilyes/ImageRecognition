@@ -43,11 +43,14 @@ if __name__ == '__main__':
         )
         model.save('main.model')
 
-        Display.print_graphic(
-            range(EPOCHS),
-            history.history['accuracy'],
-            history.history['val_accuracy'],
-            history.history['loss'],
-            history.history['val_loss'],
-        )
+        # Display.print_graphic(
+        #     range(EPOCHS),
+        #     history.history['accuracy'],
+        #     history.history['val_accuracy'],
+        #     history.history['loss'],
+        #     history.history['val_loss'],
+        # )
+
+    print(list(model.predict(val_images[:5])))
+    Display.plot_images(val_images[:5])
 

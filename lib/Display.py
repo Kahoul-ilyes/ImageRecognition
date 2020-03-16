@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 class Display:
 
+    @staticmethod
     def plot_images(images_arr):
         fig, axes = plt.subplots(1, 5, figsize=(20, 20))
         axes = axes.flatten()

@@ -1,15 +1,17 @@
 import tensorflow as tf
 from tensorflow.keras import datasets, layers, models
+import numpy as np
 
 from pathlib import Path
 
 MODEL_PATH = './models/'
-
+CLASS_NAMES = ['cat', 'dog']
 
 class Model:
     def __init__(self):
         self.model_dir = './models/'
         self.model = None
+        self.prediction_model = None
 
     def create(self, image_width, image_height):
         self.model = models.Sequential([
@@ -23,12 +25,12 @@ class Model:
             layers.Dropout(0.2),
             layers.Flatten(),
             layers.Dense(512, activation='relu'),
-            layers.Dense(1)
+            layers.Dense(2)
         ])
 
     def compile(self):
         self.model.compile(optimizer='adam',
-                           loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+                           loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
 
     def train(self, train_images, train_labels, epochs, val_images, val_labels):
@@ -51,3 +53,11 @@ class Model:
             self.model = tf.keras.models.load_model(self.model_dir + name)
         except:
             self.model = None
+
+    def predict(self, images):
+        if self.prediction_model is None:
+            self.prediction_model = tf.keras.Sequential([
+                self.model,
+                tf.keras.layers.Softmax()
+            ])
+        return map(lambda prediction: CLASS_NAMES[np.argmax(prediction)], self.prediction_model(images))
