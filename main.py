@@ -5,6 +5,7 @@ from lib.Model import Model
 from lib.Display import Display
 import numpy as np
 
+BATCH_SIZE = 128
 EPOCHS = 15
 IMG_HEIGHT = 150
 IMG_WIDTH = 150
@@ -15,8 +16,10 @@ if __name__ == '__main__':
         'https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip',
         'cats_and_dogs_filtered',
         IMG_WIDTH,
-        IMG_HEIGHT
+        IMG_HEIGHT,
+        BATCH_SIZE
     )
+    print(train_labels)
     model = Model()
 
     model.load_previous_model('main.model')
@@ -31,7 +34,8 @@ if __name__ == '__main__':
             EPOCHS,
             val_images,
             val_labels,
-            imageHandler.validation_steps
+            imageHandler.validation_steps,
+            BATCH_SIZE
         )
         model.save('main.model')
         Display.print_graphic(

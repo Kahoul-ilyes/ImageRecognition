@@ -35,17 +35,17 @@ class Model:
 
     def compile(self):
         self.model.compile(optimizer='adam',
-                           loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                           loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
 
-    def train(self, train_images, train_labels, steps_per_epoch, epochs, val_images, val_labels, validation_steps):
+    def train(self, train_images, train_labels, steps_per_epoch, epochs, val_images, val_labels, validation_steps,
+              batch_size):
         return self.model.fit(
             train_images,
             train_labels,
-            steps_per_epoch=steps_per_epoch,
-            validation_steps=validation_steps,
             epochs=epochs,
             validation_data=(val_images, val_labels),
+            validation_steps=validation_steps
         )
 
     def save(self, name):
