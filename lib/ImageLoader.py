@@ -24,7 +24,8 @@ class ImageLoader:
                                                        directory=data_path,
                                                        shuffle=True,
                                                        target_size=(image_height, image_width),
-                                                       classes=list(class_names)))
+                                                       classes=class_names,
+                                                       class_mode='sparse'))
 
     def generate_validation_data(self, data_path, image_width, image_height, class_names):
         data_generator = ImageDataGenerator(rescale=1. / 255)
@@ -32,7 +33,8 @@ class ImageLoader:
         return next(data_generator.flow_from_directory(batch_size=BATCH_SIZE,
                                                        directory=data_path,
                                                        target_size=(image_height, image_width),
-                                                       classes=list(class_names)))
+                                                       classes=class_names,
+                                                       class_mode='sparse'))
 
     def load_from_url(self, url, dir_name, image_width, image_height):
         data_dir = tf.keras.utils.get_file(
@@ -41,7 +43,7 @@ class ImageLoader:
         data_dir = pathlib.Path(data_dir)
         train_dir = data_dir.joinpath('train')
         validation_dir = data_dir.joinpath('validation')
-        self.class_names = np.array(
+        self.class_names = list(
             [item.name for item in train_dir.glob('*') if item.name != "LICENSE.txt" and item.name != ".DS_Store"])
 
         train_image_count = len(list(train_dir.glob('*/*.jpg')))

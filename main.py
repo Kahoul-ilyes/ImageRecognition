@@ -8,7 +8,6 @@ import numpy as np
 EPOCHS = 15
 IMG_HEIGHT = 150
 IMG_WIDTH = 150
-CLASS_NAME = ['cat', 'dog']
 
 if __name__ == '__main__':
     imageHandler = ImageLoader()
@@ -18,7 +17,7 @@ if __name__ == '__main__':
         IMG_WIDTH,
         IMG_HEIGHT
     )
-    model = Model(imageHandler.class_names)
+    model = Model()
 
     model.load_previous_model('main.model')
 
@@ -42,24 +41,6 @@ if __name__ == '__main__':
             history.history['loss'],
             history.history['val_loss'],
         )
+    predictions = model.predictions(val_images)
+    Display.plot_images_predictions(5, 3, predictions, val_labels, val_images, imageHandler.class_names)
 
-# Display.plot_images_predictions(3, 5, predictions, train_labels, train_images, model.class_names)
-
-# model.save('main.model')
-
-# if model.model:
-#     print(model.model)
-# else:
-#     model.create(IMG_WIDTH, IMG_HEIGHT)
-#     model.compile()
-#     history = model.train(
-#         train_images,
-#         train_labels,
-#         EPOCHS,
-#         val_images,
-#         val_labels
-#     )
-#     model.save('main.model')
-
-# print(list(model.predict(val_images[:5])))
-# Display.plot_images(val_images[:5])

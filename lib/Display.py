@@ -6,12 +6,12 @@ class Display:
 
     @staticmethod
     def plot_image(i, predictions_array, true_label, img, class_names):
-        predictions_array, true_label, img = predictions_array, true_label[i], img[i]
+        predictions_array, true_label, img = predictions_array, int(true_label[i]), img[i]
         plt.grid(False)
         plt.xticks([])
         plt.yticks([])
 
-        plt.imshow(img, cmap=plt.cm.binary)
+        plt.imshow(img)
 
         predicted_label = np.argmax(predictions_array)
         if predicted_label == true_label:
@@ -26,11 +26,11 @@ class Display:
 
     @staticmethod
     def plot_value_array(i, predictions_array, true_label):
-        predictions_array, true_label = predictions_array, true_label[i]
+        predictions_array, true_label = predictions_array, int(true_label[i])
         plt.grid(False)
-        plt.xticks(range(10))
+        plt.xticks(range(2))
         plt.yticks([])
-        thisplot = plt.bar(range(10), predictions_array, color="#777777")
+        thisplot = plt.bar(range(2), predictions_array, color="#777777")
         plt.ylim([0, 1])
         predicted_label = np.argmax(predictions_array)
 
@@ -48,7 +48,7 @@ class Display:
             plt.subplot(rows, 2 * columns, 2 * i + 2)
             Display.plot_value_array(i, predictions[i], labels)
         plt.tight_layout()
-        plt.show()
+        plt.savefig('predictions.png')
 
     @staticmethod
     def print_graphic(

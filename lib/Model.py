@@ -8,25 +8,24 @@ MODEL_PATH = './models/'
 
 
 class Model:
-    def __init__(self, labels):
+    def __init__(self):
         self.model_dir = './models/'
         self.model = None
         self.prediction_model = None
         self.class_names = []
-        for index in labels:
-            self.class_names.append(index)
 
     def create(self, image_width, image_height):
         self.model = models.Sequential()
 
-        self.model.add(layers.Conv2D(16, 3,  padding='same', activation='relu', input_shape=(image_height, image_width, 3)))
+        self.model.add(
+            layers.Conv2D(16, 3, padding='same', activation='relu', input_shape=(image_height, image_width, 3)))
         self.model.add(layers.MaxPooling2D())
         self.model.add(layers.Dropout(0.2))
 
-        self.model.add(layers.Conv2D(32, 3,  padding='same', activation='relu'))
+        self.model.add(layers.Conv2D(32, 3, padding='same', activation='relu'))
         self.model.add(layers.MaxPooling2D())
 
-        self.model.add(layers.Conv2D(64, 3,  padding='same', activation='relu'))
+        self.model.add(layers.Conv2D(64, 3, padding='same', activation='relu'))
         self.model.add(layers.MaxPooling2D())
         self.model.add(layers.Dropout(0.2))
 
@@ -36,7 +35,7 @@ class Model:
 
     def compile(self):
         self.model.compile(optimizer='adam',
-                           loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
+                           loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
 
     def train(self, train_images, train_labels, steps_per_epoch, epochs, val_images, val_labels, validation_steps):
