@@ -43,4 +43,4 @@ if __name__ == '__main__':
             history.history['val_loss'],
         )
     predictions = model.predictions(val_images)
-    Display.plot_images_predictions(5, 3, predictions, val_labels.numpy(), val_images, imageHandler.class_names)
+    Display.plot_images_predictions(5, 5, predictions, val_labels.numpy(), val_images, imageHandler.class_names)

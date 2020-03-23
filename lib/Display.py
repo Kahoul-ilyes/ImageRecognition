@@ -45,7 +45,7 @@ class Display:
         thisplot[true_label].set_color('blue')
 
     @staticmethod
-    def plot_images_predictions(rows, columns, predictions, labels, images, class_names):
+    def plot_images_predictions(columns, rows, predictions, labels, images, class_names):
 
         num_images = rows * columns
         plt.figure(figsize=(2 * 2 * columns, 2 * rows))
