@@ -3,34 +3,40 @@ from tensorflow.keras import layers, models
 
 from pathlib import Path
 
+from tensorflow_core.python.keras import regularizers
+
 MODEL_PATH = './models/'
 
 
 class Model:
-    def __init__(self):
+    def __init__(self, class_names):
         self.model_dir = './models/'
         self.model = None
         self.prediction_model = None
-        self.class_names = []
+        self.class_names = class_names
 
     def create(self, image_width, image_height):
         self.model = models.Sequential()
 
         self.model.add(
-            layers.Conv2D(16, 3, padding='same', activation='relu', input_shape=(image_height, image_width, 3)))
+            layers.Conv2D(16, 3, kernel_regularizer=regularizers.l2(0.0001),
+                          padding='same', activation='relu', input_shape=(image_height, image_width, 3)))
         self.model.add(layers.MaxPooling2D())
-        self.model.add(layers.Dropout(0.2))
+        self.model.add(layers.Dropout(0.4))
 
-        self.model.add(layers.Conv2D(32, 3, padding='same', activation='relu'))
+        self.model.add(layers.Conv2D(32, 3, kernel_regularizer=regularizers.l2(0.0001),
+                                     padding='same', activation='relu'))
         self.model.add(layers.MaxPooling2D())
 
-        self.model.add(layers.Conv2D(64, 3, padding='same', activation='relu'))
+        self.model.add(layers.Conv2D(64, 3, kernel_regularizer=regularizers.l2(0.0001),
+                                     padding='same', activation='relu'))
         self.model.add(layers.MaxPooling2D())
-        self.model.add(layers.Dropout(0.2))
+        self.model.add(layers.Dropout(0.4))
 
         self.model.add(layers.Flatten())
-        self.model.add(layers.Dense(512, activation='relu'))
-        self.model.add(layers.Dense(2))
+        self.model.add(layers.Dense(512, kernel_regularizer=regularizers.l2(0.0001),
+                                    activation='relu'))
+        self.model.add(layers.Dense(len(self.class_names)))
 
     def compile(self):
         self.model.compile(optimizer='adam',

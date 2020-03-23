@@ -35,9 +35,9 @@ class Display:
     def plot_value_array(i, predictions_array, true_label):
         predictions_array, true_label = predictions_array, Display.get_true_label(true_label[i])
         plt.grid(False)
-        plt.xticks(range(2))
+        plt.xticks(range(len(predictions_array)))
         plt.yticks([])
-        thisplot = plt.bar(range(2), predictions_array, color="#777777")
+        thisplot = plt.bar(range(len(predictions_array)), predictions_array, color="#777777")
         plt.ylim([0, 1])
         predicted_label = np.argmax(predictions_array)
 

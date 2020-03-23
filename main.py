@@ -13,13 +13,13 @@ if __name__ == '__main__':
     imageHandler = ImageLoader('train', 'test')
 
     (train_images, train_labels), (val_images, val_labels) = imageHandler.load_from_directory(
-        './chest_Xray',
+        './chest_Xray_bonus',
         IMG_WIDTH,
         IMG_HEIGHT,
         BATCH_SIZE
     )
 
-    model = Model()
+    model = Model(imageHandler.class_names)
 
     model.load_previous_model('main.model')
 
