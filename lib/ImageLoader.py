@@ -9,11 +9,13 @@ import pathlib
 
 
 class ImageLoader:
-    def __init__(self):
+    def __init__(self, train_dir, validation_dir):
         self.class_names = None
         self.validation_steps = None
         self.image_width = None
         self.image_height = None
+        self.train_dir = train_dir
+        self.validation_dir = validation_dir
 
     def get_label(self, file_path):
         # convert the path to a list of path components
@@ -37,7 +39,8 @@ class ImageLoader:
         return img, label
 
     def generate_training_dataset(self, path, batch_size, shuffle_buffer_size=1000):
-        list_ds = tf.data.Dataset.list_files(str(path / '*/*'))
+        list_ds = tf.data.Dataset.list_files(str(path / '*/*.jpeg'))
+
         ds = list_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)
 
         ds = ds.shuffle(buffer_size=shuffle_buffer_size)
@@ -54,7 +57,7 @@ class ImageLoader:
         return next(iter(ds))
 
     def generate_validation_dataset(self, path, batch_size):
-        list_ds = tf.data.Dataset.list_files(str(path / '*/*'))
+        list_ds = tf.data.Dataset.list_files(str(path / '*/*.jpeg'))
         ds = list_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)
 
         # Repeat forever
@@ -64,17 +67,20 @@ class ImageLoader:
 
         return next(iter(ds))
 
+    def load_from_directory(self, data_dir, image_width, image_height, batch_size):
+        data_dir = pathlib.Path(data_dir)
+        full_train_dir = data_dir.joinpath(self.train_dir)
+        full_validation_dir = data_dir.joinpath(self.validation_dir)
+        self.image_width = image_width
+        self.image_height = image_height
+        self.class_names = list(
+            [item.name for item in full_train_dir.glob('*') if item.name != "LICENSE.txt" and item.name[0] != '.'])
+
+        return self.generate_training_dataset(full_train_dir, batch_size), self.generate_validation_dataset(
+            full_validation_dir, batch_size)
+
     def load_from_url(self, url, dir_name, image_width, image_height, batch_size):
         data_dir = tf.keras.utils.get_file(
             origin=url,
             fname=dir_name, untar=True)
-        data_dir = pathlib.Path(data_dir)
-        train_dir = data_dir.joinpath('train')
-        validation_dir = data_dir.joinpath('validation')
-        self.image_width = image_width
-        self.image_height = image_height
-        self.class_names = list(
-            [item.name for item in train_dir.glob('*') if item.name != "LICENSE.txt" and item.name != ".DS_Store"])
-
-        return self.generate_training_dataset(train_dir, batch_size), self.generate_validation_dataset(validation_dir,
-                                                                                                       batch_size)
+        return self.load_from_directory(data_dir, image_width, image_height, batch_size)

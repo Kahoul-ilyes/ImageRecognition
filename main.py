@@ -10,14 +10,15 @@ IMG_HEIGHT = 150
 IMG_WIDTH = 150
 
 if __name__ == '__main__':
-    imageHandler = ImageLoader()
-    (train_images, train_labels), (val_images, val_labels) = imageHandler.load_from_url(
-        'https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip',
-        'cats_and_dogs_filtered',
+    imageHandler = ImageLoader('train', 'test')
+
+    (train_images, train_labels), (val_images, val_labels) = imageHandler.load_from_directory(
+        './chest_Xray',
         IMG_WIDTH,
         IMG_HEIGHT,
         BATCH_SIZE
     )
+
     model = Model()
 
     model.load_previous_model('main.model')
@@ -43,4 +44,3 @@ if __name__ == '__main__':
         )
     predictions = model.predictions(val_images)
     Display.plot_images_predictions(5, 3, predictions, val_labels.numpy(), val_images, imageHandler.class_names)
-
