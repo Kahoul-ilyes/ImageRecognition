@@ -5,8 +5,15 @@ import numpy as np
 class Display:
 
     @staticmethod
+    def get_true_label(labels):
+        for i in range(len(labels)):
+            if labels[i]:
+                return i
+        return -1
+
+    @staticmethod
     def plot_image(i, predictions_array, true_label, img, class_names):
-        predictions_array, true_label, img = predictions_array, int(true_label[i]), img[i]
+        predictions_array, true_label, img = predictions_array, Display.get_true_label(true_label[i]), img[i]
         plt.grid(False)
         plt.xticks([])
         plt.yticks([])
@@ -26,7 +33,7 @@ class Display:
 
     @staticmethod
     def plot_value_array(i, predictions_array, true_label):
-        predictions_array, true_label = predictions_array, int(true_label[i])
+        predictions_array, true_label = predictions_array, Display.get_true_label(true_label[i])
         plt.grid(False)
         plt.xticks(range(2))
         plt.yticks([])
@@ -48,7 +55,7 @@ class Display:
             plt.subplot(rows, 2 * columns, 2 * i + 2)
             Display.plot_value_array(i, predictions[i], labels)
         plt.tight_layout()
-        plt.savefig('predictions.png')
+        plt.savefig('result.png')
 
     @staticmethod
     def print_graphic(

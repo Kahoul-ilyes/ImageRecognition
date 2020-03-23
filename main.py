@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from lib.ImageLoader import ImageLoader
 from lib.Model import Model
 from lib.Display import Display
-import numpy as np
 
 BATCH_SIZE = 128
 EPOCHS = 15
@@ -19,7 +18,6 @@ if __name__ == '__main__':
         IMG_HEIGHT,
         BATCH_SIZE
     )
-    print(train_labels)
     model = Model()
 
     model.load_previous_model('main.model')
@@ -46,5 +44,5 @@ if __name__ == '__main__':
             history.history['val_loss'],
         )
     predictions = model.predictions(val_images)
-    Display.plot_images_predictions(5, 3, predictions, val_labels, val_images, imageHandler.class_names)
+    Display.plot_images_predictions(5, 3, predictions, val_labels.numpy(), val_images, imageHandler.class_names)
 

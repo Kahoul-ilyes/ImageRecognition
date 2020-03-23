@@ -1,6 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras import datasets, layers, models
-import numpy as np
+from tensorflow.keras import layers, models
 
 from pathlib import Path
 
