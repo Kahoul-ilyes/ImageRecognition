@@ -37,8 +37,7 @@ class Model:
                            loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
                            metrics=['accuracy'])
 
-    def train(self, train_images, train_labels, steps_per_epoch, epochs, val_images, val_labels, validation_steps,
-              batch_size):
+    def train(self, train_images, train_labels, epochs, val_images, val_labels, validation_steps):
         return self.model.fit(
             train_images,
             train_labels,

@@ -11,7 +11,6 @@ import pathlib
 class ImageLoader:
     def __init__(self):
         self.class_names = None
-        self.steps_per_epoch = None
         self.validation_steps = None
         self.image_width = None
         self.image_height = None
@@ -54,7 +53,7 @@ class ImageLoader:
 
         return next(iter(ds))
 
-    def generate_validation_dataset(self, path, batch_size, shuffle_buffer_size=1000):
+    def generate_validation_dataset(self, path, batch_size):
         list_ds = tf.data.Dataset.list_files(str(path / '*/*'))
         ds = list_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)
 

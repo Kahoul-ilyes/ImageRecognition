@@ -5,7 +5,7 @@ from lib.Model import Model
 from lib.Display import Display
 
 BATCH_SIZE = 128
-EPOCHS = 15
+EPOCHS = 20
 IMG_HEIGHT = 150
 IMG_WIDTH = 150
 
@@ -28,12 +28,10 @@ if __name__ == '__main__':
         history = model.train(
             train_images,
             train_labels,
-            imageHandler.steps_per_epoch,
             EPOCHS,
             val_images,
             val_labels,
             imageHandler.validation_steps,
-            BATCH_SIZE
         )
         model.save('main.model')
         Display.print_graphic(
