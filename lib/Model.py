@@ -22,7 +22,7 @@ class Model:
             layers.Conv2D(16, 3, kernel_regularizer=regularizers.l2(0.0001),
                           padding='same', activation='relu', input_shape=(image_height, image_width, 3)))
         self.model.add(layers.MaxPooling2D())
-        self.model.add(layers.Dropout(0.4))
+        self.model.add(layers.Dropout(0.3))
 
         self.model.add(layers.Conv2D(32, 3, kernel_regularizer=regularizers.l2(0.0001),
                                      padding='same', activation='relu'))
@@ -31,7 +31,7 @@ class Model:
         self.model.add(layers.Conv2D(64, 3, kernel_regularizer=regularizers.l2(0.0001),
                                      padding='same', activation='relu'))
         self.model.add(layers.MaxPooling2D())
-        self.model.add(layers.Dropout(0.4))
+        self.model.add(layers.Dropout(0.3))
 
         self.model.add(layers.Flatten())
         self.model.add(layers.Dense(512, kernel_regularizer=regularizers.l2(0.0001),

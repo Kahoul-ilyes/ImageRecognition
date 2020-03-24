@@ -34,14 +34,27 @@ class ImageLoader:
     def process_path(self, file_path):
         label = self.get_label(file_path)
         # load the raw data from the file as a string
+
         img = tf.io.read_file(file_path)
         img = self.decode_img(img)
+
+        return img, label
+
+    def process_path_with_data_augmentation(self, file_path):
+        label = self.get_label(file_path)
+        # load the raw data from the file as a string
+        img = tf.io.read_file(file_path)
+        img = self.decode_img(img)
+
+        img = tf.image.random_flip_left_right(img)
+        img = tf.image.random_flip_up_down(img)
+
         return img, label
 
     def generate_training_dataset(self, path, batch_size, shuffle_buffer_size=1000):
         list_ds = tf.data.Dataset.list_files(str(path / '*/*.jpeg'))
 
-        ds = list_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)
+        ds = list_ds.map(self.process_path_with_data_augmentation, num_parallel_calls=AUTOTUNE)
 
         ds = ds.shuffle(buffer_size=shuffle_buffer_size)
 
