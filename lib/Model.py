@@ -63,9 +63,4 @@ class Model:
             self.model = None
 
     def predictions(self, images):
-        if self.prediction_model is None:
-            self.prediction_model = tf.keras.Sequential([
-                self.model,
-                tf.keras.layers.Softmax()
-            ])
-        return self.prediction_model.predict(images)
+        return self.model.predict(images)
