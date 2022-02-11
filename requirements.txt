@@ -42,7 +42,7 @@ packaging==20.0
 patch-ng==1.17.2
 Pillow==7.0.0
 pluginbase==0.7
-protobuf==3.11.3
+protobuf==3.15.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.19
